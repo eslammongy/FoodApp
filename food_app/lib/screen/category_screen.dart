@@ -8,10 +8,6 @@ class CategoryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xff1D1F1F),
-      appBar: AppBar(
-        title: Text("Category"),
-        centerTitle: true,
-      ),
       body: GridView(
         padding: EdgeInsets.all(25.0),
         children: DUMMY_CATEGORIES
