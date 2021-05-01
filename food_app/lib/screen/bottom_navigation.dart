@@ -1,15 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:food_app/model/meal.dart';
 import 'package:food_app/screen/category_screen.dart';
 import 'package:food_app/screen/favorite_screen.dart';
 import 'package:food_app/widget/main_drawer.dart';
 
 class BottomTapScreen extends StatefulWidget {
+  final List<Meal> listFavoriteMeal;
+  BottomTapScreen(this.listFavoriteMeal);
   @override
   _BottomTapScreenState createState() => _BottomTapScreenState();
 }
 
 class _BottomTapScreenState extends State<BottomTapScreen> {
   int selectedPageIndex = 0;
+  List<Map<String, Object>> pages;
+
+  @override
+  void initState() {
+    pages = [
+      {"page": CategoryScreen(), "title": "Category Screen"},
+      {
+        "page": FavoriteScreen(widget.listFavoriteMeal),
+        "title": "Favorite Screen"
+      }
+    ];
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,9 +59,4 @@ class _BottomTapScreenState extends State<BottomTapScreen> {
       selectedPageIndex = value;
     });
   }
-
-  final List<Map<String, Object>> pages = [
-    {"page": CategoryScreen(), "title": "Category Screen"},
-    {"page": FavoriteScreen(), "title": "Favorite Screen"}
-  ];
 }

@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:food_app/dummy_data.dart';
 
 class MealDetailsScreen extends StatelessWidget {
   static String MealDetailsScreenID = "Meal_Details";
+  final Function setFavoriteList;
+  final Function isFavoriteMeal;
+  MealDetailsScreen(this.isFavoriteMeal, this.setFavoriteList);
   @override
   Widget build(BuildContext context) {
     final mealID = ModalRoute.of(context).settings.arguments as String;
     final selectedMeal = DUMMY_MEALS.firstWhere((meal) => meal.id == mealID);
     return Scaffold(
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: Color(0xff373737),
         appBar: AppBar(
           title: Text(selectedMeal.title),
         ),
@@ -17,10 +21,17 @@ class MealDetailsScreen extends StatelessWidget {
             children: [
               Container(
                 width: double.infinity,
-                height: 300,
-                child: Image.network(
-                  selectedMeal.imageUrl,
-                  fit: BoxFit.cover,
+                height: 250,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(25),
+                      bottomRight: Radius.circular(25)),
+                  child: Image.network(
+                    selectedMeal.imageUrl,
+                    height: 200,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
               Container(
@@ -29,20 +40,22 @@ class MealDetailsScreen extends StatelessWidget {
                   "Ingradients",
                   style: TextStyle(
                       fontSize: 25,
-                      color: Colors.black87,
-                      fontFamily: 'RobotoCondensed'),
+                      fontFamily: "Raleway",
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white),
                 ),
               ),
               buildContainerView(
                 ListView.builder(
                     itemBuilder: (context, index) => Card(
-                          color: Theme.of(context).accentColor,
+                          color: Colors.deepPurple,
                           child: Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: Text(selectedMeal.ingredients[index],
                                 style: TextStyle(
                                     fontSize: 20,
-                                    color: Colors.black87,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w400,
                                     fontFamily: 'RobotoCondensed')),
                           ),
                         ),
@@ -54,15 +67,19 @@ class MealDetailsScreen extends StatelessWidget {
                   "Seteps",
                   style: TextStyle(
                       fontSize: 25,
-                      color: Colors.black87,
-                      fontFamily: 'RobotoCondensed'),
+                      fontFamily: "Raleway",
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white),
                 ),
               ),
               buildContainerView(
                 ListView.builder(
                     itemBuilder: (context, index) => ListTile(
                           leading: CircleAvatar(child: Text("${index + 1}")),
-                          title: Text(selectedMeal.steps[index]),
+                          title: Text(
+                            selectedMeal.steps[index],
+                            style: TextStyle(color: Colors.white),
+                          ),
                         ),
                     itemCount: selectedMeal.steps.length),
               ),
@@ -70,18 +87,16 @@ class MealDetailsScreen extends StatelessWidget {
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.delete_forever),
-          onPressed: () {
-            Navigator.of(context).pop(mealID);
-          },
-        ));
+            child:
+                Icon(isFavoriteMeal(mealID) ? Icons.star : Icons.star_border),
+            onPressed: () => setFavoriteList(mealID)));
   }
 
   Widget buildContainerView(Widget child) {
     return Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
-          color: Colors.blueGrey,
+          color: Colors.black26,
         ),
         margin: EdgeInsets.all(10),
         padding: EdgeInsets.all(10),

@@ -20,10 +20,19 @@ class CategoryItem extends StatelessWidget {
       splashColor: Theme.of(context).primaryColor,
       borderRadius: BorderRadius.circular(15),
       child: Container(
-        padding: EdgeInsets.all(15),
-        child: Text(
-          title,
-          style: Theme.of(context).textTheme.title,
+        padding: EdgeInsets.all(10),
+        child: Column(
+          children: [
+            Text(
+              title,
+              style: Theme.of(context).textTheme.title,
+            ),
+            Image(
+              width: 60,
+              height: 60,
+              image: AssetImage("images/icons_hamburger.png"),
+            ),
+          ],
         ),
         decoration: BoxDecoration(
             gradient: LinearGradient(
